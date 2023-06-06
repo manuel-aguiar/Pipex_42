@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 12:36:48 by marvin            #+#    #+#             */
-/*   Updated: 2023/06/01 12:36:50 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/06 19:04:40 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@
 # define ERR_DUP "Error in dup"
 # define ERR_DUP2 "Error in dup2"
 # define ERR_ENV "No PATH on ENV variables"
-# define ERR_FIRST_OPEN "Error while opening first file, make sure the first input is a valid file path"
-# define ERR_LAST_OPEN "Error while opening last file, make sure the last input is a valid file path"
+# define ERR_FIRST_OPEN "Error while opening first file, make sure the \
+first input is a valid file path"
+# define ERR_LAST_OPEN "Error while opening last file, make sure the \
+last input is a valid file path"
 # define ERR_MALLOC "Malloc failed"
 # define ERR_EXEC "Execution failed, check path and/or cmd"
 # define ERR_CMD "Cmd failed to launch, check flags and system resources"
@@ -52,7 +54,6 @@ typedef struct s_pipex
 	int		here_doc;
 	char	*tmp_name;
 }	t_pipex;
-
 
 /*pipex_struct.c*/
 int		setup_pipex_st(t_pipex *pipex, char **env);

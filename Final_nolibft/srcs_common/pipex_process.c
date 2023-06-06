@@ -84,7 +84,7 @@ int	command_execution(t_pipex *pipex, int ac, char **av)
 				pipex->output = pipex->pipefd[1];
 			if (pipex->is_parent == 0)
 				child_process(pipex, av, i);
-			if(!parent_process(pipex))
+			if (!parent_process(pipex))
 				return (0);
 		}
 		else

@@ -14,9 +14,9 @@
 
 int	join_path_bin(char **full_path, char *path, char *bin)
 {
-	int     path_len;
-	int     bin_len;
-	char    *new;
+	int		path_len;
+	int		bin_len;
+	char	*new;
 
 	path_len = ft_strlen(path);
 	if (path[path_len - 1] == '/')
@@ -43,20 +43,16 @@ int	exec_command(t_pipex *pipex, char *cmd)
 	if (!cmd_args)
 		return (error_msg(NULL, ERR_MALLOC));
 	i = 0;
-	while(pipex->path[i])
+	while (pipex->path[i])
 	{
-		if (join_path_bin(&full_path, pipex->path[i++], cmd_args[0]))
+		if (join_path_bin(&full_path, pipex->path[i++], cmd_args[0]) \
+		&& access(full_path, F_OK) == 0)
 		{
-			if (access(full_path, F_OK) == 0)
-			{
-				if (execve(full_path, cmd_args, pipex->env) == -1)
-					break;
-			}
-			else
-				ft_free_set_null(&full_path);
+			if (execve(full_path, cmd_args, pipex->env) == -1)
+				break ;
 		}
 		else
-			break;
+			ft_free_set_null(&full_path);
 	}
 	ft_free_set_null(&full_path);
 	ft_free_charmat_null(&cmd_args, &free);
