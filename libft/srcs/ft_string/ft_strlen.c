@@ -123,6 +123,8 @@ size_t	ft_strlen(t_cchar *str)
 	return (i);
 }
 
+*/
+
 /*
 
 #include <stdio.h>
