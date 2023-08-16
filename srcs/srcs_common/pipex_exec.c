@@ -56,7 +56,7 @@ int	exec_cmd_with_path(t_pipex *pipex, char ***args)
 	return (1);
 }
 
-int	exec_cmd_no_path(t_pipex *pipex, char ***args)
+int	exec_cmd_search_path(t_pipex *pipex, char ***args)
 {
 	int		i;
 	char	*full_path;
@@ -95,7 +95,7 @@ int	exec_command(t_pipex *pipex, char *cmd)
 		return (error_msg(ERR_MALLOC));
 	if (ft_strrchr(cmd_args[0], '/'))
 		return (exec_cmd_with_path(pipex, &cmd_args));
-	exec_cmd_no_path(pipex, &cmd_args);
+	exec_cmd_search_path(pipex, &cmd_args);
 	ft_free_charmat_null(&cmd_args, &free);
 	return (0);
 }
