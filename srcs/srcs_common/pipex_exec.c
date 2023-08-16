@@ -42,6 +42,8 @@ int	exec_command(t_pipex *pipex, char *cmd)
 	cmd_args = ft_split(cmd, ' ');
 	if (!cmd_args)
 		return (error_msg(NULL, ERR_MALLOC));
+	if (ft_strrchr(cmd_args[0], '/') && access(cmd_args[0], F_OK) == 0)
+		execve(cmd_args[0], cmd_args, pipex->env);
 	i = 0;
 	while (pipex->path[i])
 	{
