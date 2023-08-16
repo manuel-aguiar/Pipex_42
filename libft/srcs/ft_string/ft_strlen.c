@@ -46,6 +46,17 @@ se still don't know which one-> loop unroll (faster?)
 
 #include "ft_string.h"
 
+size_t	ft_strlen(t_cchar *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+/*
 #define RIGHT_BIT_ONE 0x01010101
 #define LEFT_BIT_ONE 0x80808080
 
@@ -111,18 +122,6 @@ size_t	ft_strlen(t_cchar *str)
 		}
 	}
 }
-
-/*
-size_t	ft_strlen(t_cchar *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
 */
 
 /*

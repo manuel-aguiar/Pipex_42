@@ -2,7 +2,7 @@
 ## BUILD DETAILS
 
 NAME = libft.a
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror
 LIB = ar rcs
 RM = rm

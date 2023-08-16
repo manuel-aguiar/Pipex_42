@@ -18,16 +18,28 @@
 # include <stddef.h>
 # include <limits.h>
 
-# if defined(__LP64__) || defined(_WIN64)
+# if defined(__LP64__)
 #  define UL_SIZE 8
 #  define UL_ALIGN 7
-# elif defined(__x86_64__) || defined(__aarch64__)
+# elif defined(_WIN64)
 #  define UL_SIZE 8
 #  define UL_ALIGN 7
-# elif defined(__LP32__) || defined(_WIN32)
+# elif defined(__x86_64__)
+#  define UL_SIZE 8
+#  define UL_ALIGN 7
+# elif defined(__aarch64__)
+#  define UL_SIZE 8
+#  define UL_ALIGN 7
+# elif defined(__LP32__)
 #  define UL_SIZE 4
 #  define UL_ALIGN 3
-# elif defined(__i386__) || defined(__arm__)
+# elif defined(_WIN32)
+#  define UL_SIZE 4
+#  define UL_ALIGN 3
+# elif defined(__i386__)
+#  define UL_SIZE 4
+#  define UL_ALIGN 3
+# elif defined(__arm__)
 #  define UL_SIZE 4
 #  define UL_ALIGN 3
 # else

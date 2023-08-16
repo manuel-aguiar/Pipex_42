@@ -12,15 +12,15 @@
 /*
 Transform command line arguments to an integer array. If at least one argv[i]
 can't be converted, arr is freed. Returns length of the int array, or zero if
-conversion of at least one of argv[i] fails. User input, ac is the max of 
-integers converted. If user ac = -1, fuction gets the length of av and converts 
+conversion of at least one of argv[i] fails. User input, ac is the max of
+integers converted. If user ac = -1, fuction gets the length of av and converts
 all to integers, if possible. (av must be null terminated in that case).
 
-the return value is zero if malloc fails or one of the inputs overflows 
-the integer. In this case, the location where the array would eb placed 
+the return value is zero if malloc fails or one of the inputs overflows
+the integer. In this case, the location where the array would eb placed
 is set to NULL for safety
 
-returns the size of the array that was created when it is successfull which 
+returns the size of the array that was created when it is successfull which
 can be asigned to a variable for safe array manipulation.
 
 */
@@ -68,6 +68,7 @@ static int	*atoi_arr_malloc(int *ac, char **av, int *status)
 	int	avlen;
 	int	*arr;
 
+	arr = NULL;
 	avlen = ft_argv_count(av);
 	if (*ac == 0 || !avlen)
 	{
