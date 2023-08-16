@@ -12,21 +12,19 @@
 
 #include "pipex.h"
 
-int	error_msg(char *cmd, char *str)
+int	perror_msg(char *text)
 {
-	if (str)
-		ft_putstr_fd(str, STDERR_FILENO);
-	if (cmd)
-	{
-		ft_putstr_fd(": ", STDERR_FILENO);
-		ft_putstr_fd(cmd, STDERR_FILENO);
-	}
-	if (str || cmd)
-		ft_putstr_fd("\n", STDERR_FILENO);
+	perror(text);
 	return (0);
 }
 
-void	error_msg_exit(char *cmd, char *str)
+int	error_msg(char *text)
+{
+	ft_putstr_fd(text, STDERR_FILENO);
+	return (0);
+}
+
+void	error_msg_exit(t_pipex *pipex, char *cmd, char *str)
 {
 	if (str)
 		ft_putstr_fd(str, STDERR_FILENO);
@@ -37,5 +35,6 @@ void	error_msg_exit(char *cmd, char *str)
 	}
 	if (str || cmd)
 		ft_putstr_fd("\n", STDERR_FILENO);
+	destroy_pipex_st(pipex);
 	exit(EXIT_FAILURE);
 }

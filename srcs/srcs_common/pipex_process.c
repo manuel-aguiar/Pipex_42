@@ -17,11 +17,11 @@ int	pipe_and_fork(t_pipex *pipex, int ac, int i)
 	if (i < ac - 2)
 	{
 		if (pipe(pipex->pipefd) == -1)
-			return (error_msg(NULL, ERR_PIPE));
+			return (error_msg(ERR_PIPE));
 	}
 	pipex->is_parent = fork();
 	if (pipex->is_parent == -1)
-		return (error_msg(NULL, ERR_FORK));
+		return (error_msg(ERR_FORK));
 	return (1);
 }
 
@@ -30,13 +30,15 @@ int	child_process(t_pipex *pipex, char **av, int i)
 	if (i == 0 && pipex->pipefd[0] != -1)
 		close(pipex->pipefd[0]);
 	if (dup2(pipex->input, STDIN_FILENO) == -1)
-		error_msg_exit(NULL, ERR_DUP2);
+		error_msg_exit(pipex, NULL, ERR_DUP2);
 	if (dup2(pipex->output, STDOUT_FILENO) == -1)
-		error_msg_exit(NULL, ERR_DUP2);
+		error_msg_exit(pipex, NULL, ERR_DUP2);
 	close(pipex->input);
 	close(pipex->output);
 	if (!exec_command(pipex, av[i]))
 	{
+		close(STDIN_FILENO);
+		close(STDOUT_FILENO);
 		destroy_pipex_st(pipex);
 		exit(EXIT_FAILURE);
 	}
@@ -45,11 +47,10 @@ int	child_process(t_pipex *pipex, char **av, int i)
 
 int	parent_process(t_pipex *pipex)
 {
-	if (pipex->here_doc)
+	if (pipex->here_doc && pipex->tmp_name)
 	{
 		unlink(pipex->tmp_name);
 		ft_free_set_null(&pipex->tmp_name);
-		pipex->here_doc = 0;
 	}
 	close(pipex->input);
 	close(pipex->output);
@@ -57,11 +58,24 @@ int	parent_process(t_pipex *pipex)
 	{
 		pipex->input = dup(pipex->pipefd[0]);
 		if (pipex->input == -1)
-			return (error_msg(NULL, ERR_DUP));
+			return (error_msg(ERR_DUP));
 		close(pipex->pipefd[0]);
 	}
 	pipex->pipefd[0] = -1;
 	pipex->pipefd[1] = -1;
+	return (1);
+}
+
+int	output_file(t_pipex *pipex, char **av, int index)
+{
+	if (pipex->here_doc)
+		pipex->output = open(av[index + 1], O_CREAT \
+						| O_WRONLY | O_APPEND, 0644);
+	else
+		pipex->output = open(av[index + 1], O_CREAT \
+						| O_WRONLY | O_TRUNC, 0644);
+	if (pipex->output == -1)
+		return (perror_msg(av[index + 1]));
 	return (1);
 }
 
@@ -74,9 +88,8 @@ int	command_execution(t_pipex *pipex, int ac, char **av)
 	{
 		if (i == ac - 2)
 		{
-			pipex->output = open(av[i + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
-			if (pipex->output == -1)
-				return (error_msg(NULL, ERR_LAST_OPEN));
+			if (!output_file(pipex, av, i))
+				return (0);
 		}
 		if (pipe_and_fork(pipex, ac, i))
 		{

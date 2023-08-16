@@ -24,7 +24,7 @@ int	join_path_bin(char **full_path, char *path, char *bin)
 	bin_len = ft_strlen(bin);
 	new = malloc(sizeof(*new) * (path_len + bin_len + 1 + 1));
 	if (!new)
-		return (error_msg(NULL, ERR_MALLOC));
+		return (error_msg(ERR_MALLOC));
 	ft_memcpy(new, path, path_len);
 	new[path_len] = '/';
 	ft_memcpy(&new[path_len + 1], bin, bin_len);
@@ -33,17 +33,36 @@ int	join_path_bin(char **full_path, char *path, char *bin)
 	return (1);
 }
 
-int	exec_command(t_pipex *pipex, char *cmd)
+int	exec_cmd_with_path(t_pipex *pipex, char ***args)
+{
+	char	**cmd_args;
+
+	cmd_args = *args;
+	if (access(cmd_args[0], F_OK))
+	{
+		perror(cmd_args[0]);
+		ft_free_charmat_null(args, &free);
+		return (0);
+	}
+	else
+	{
+		if (execve(cmd_args[0], cmd_args, pipex->env) == -1)
+		{
+			perror(cmd_args[0]);
+			ft_free_charmat_null(args, &free);
+			return (0);
+		}
+	}
+	return (1);
+}
+
+int	exec_cmd_no_path(t_pipex *pipex, char ***args)
 {
 	int		i;
 	char	*full_path;
 	char	**cmd_args;
 
-	cmd_args = ft_split(cmd, ' ');
-	if (!cmd_args)
-		return (error_msg(NULL, ERR_MALLOC));
-	if (ft_strrchr(cmd_args[0], '/') && access(cmd_args[0], F_OK) == 0)
-		execve(cmd_args[0], cmd_args, pipex->env);
+	cmd_args = *args;
 	i = 0;
 	while (pipex->path[i])
 	{
@@ -51,12 +70,32 @@ int	exec_command(t_pipex *pipex, char *cmd)
 		&& access(full_path, F_OK) == 0)
 		{
 			if (execve(full_path, cmd_args, pipex->env) == -1)
-				break ;
+			{
+				perror(cmd_args[0]);
+				ft_free_set_null(&full_path);
+				return (0);
+			}
 		}
 		else
 			ft_free_set_null(&full_path);
 	}
-	ft_free_set_null(&full_path);
+	error_msg("command not found: ");
+	error_msg(cmd_args[0]);
+	error_msg("\n");
+	return (0);
+}
+
+int	exec_command(t_pipex *pipex, char *cmd)
+{
+	int		i;
+	char	**cmd_args;
+
+	cmd_args = ft_split(cmd, ' ');
+	if (!cmd_args)
+		return (error_msg(ERR_MALLOC));
+	if (ft_strrchr(cmd_args[0], '/'))
+		return (exec_cmd_with_path(pipex, &cmd_args));
+	exec_cmd_no_path(pipex, &cmd_args);
 	ft_free_charmat_null(&cmd_args, &free);
-	return (error_msg(cmd, ERR_EXEC));
+	return (0);
 }

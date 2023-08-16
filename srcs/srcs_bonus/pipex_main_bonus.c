@@ -6,7 +6,7 @@
 /*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 12:01:39 by marvin            #+#    #+#             */
-/*   Updated: 2023/06/06 18:57:43 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/08/16 23:04:32 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	main(int ac, char **av, char **env)
 {
-	if (ac < 4)
-		return (error_msg(NULL, ERR_NOOBS));
+	if (ac < 5)
+		return (error_msg(ERR_NOOBS));
 	else
 	{
 		if (pipex_solver(--ac, ++av, env))

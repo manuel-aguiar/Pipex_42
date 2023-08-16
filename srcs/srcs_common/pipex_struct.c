@@ -21,12 +21,12 @@ int	setup_pipex_st(t_pipex *pipex, char **env)
 	while (ft_strncmp("PATH", env[i], 4))
 		i++;
 	if (!env[i])
-		return (error_msg(NULL, ERR_PATH));
+		return (error_msg(ERR_PATH));
 	folders = ft_split(&env[i][5], ':');
 	if (folders)
 		pipex->path = folders;
 	else
-		return (error_msg(NULL, ERR_MALLOC));
+		return (perror_msg(ERR_MALLOC));
 	pipex->env = env;
 	pipex->input = -1;
 	pipex->output = -1;

@@ -37,19 +37,20 @@ int	here_doc(t_pipex *pipex, char **av)
 	close(pipex->input);
 	pipex->input = open(pipex->tmp_name, O_RDONLY);
 	if (pipex->input == -1)
-		return (error_msg(NULL, ERR_FIRST_OPEN));
+		return (perror_msg(pipex->tmp_name));
 	return (1);
 }
 
-int	manage_input(t_pipex *pipex, char **av)
+int	manage_input(t_pipex *pipex, char **av, int ac)
 {
-	if (!ft_strncmp("here_doc", av[0], 8) && ft_strlen(av[0]) == 8)
+	if (!ft_strncmp("here_doc", av[0], 8) && ft_strlen(av[0]) == 8 \
+		&& ac == 5)
 		pipex->here_doc = 1;
 	if (!pipex->here_doc)
 	{
 		pipex->input = open(av[0], O_RDONLY);
 		if (pipex->input == -1)
-			return (error_msg(NULL, ERR_FIRST_OPEN));
+			return (perror_msg(av[0]));
 	}
 	else
 	{
@@ -58,11 +59,11 @@ int	manage_input(t_pipex *pipex, char **av)
 			pipex->input = open(pipex->tmp_name, \
 			O_CREAT | O_TRUNC | O_RDWR, 0644);
 			if (pipex->input == -1)
-				return (error_msg(NULL, ERR_FIRST_OPEN));
+				return (perror_msg(pipex->tmp_name));
 			return (here_doc(pipex, av));
 		}
 		else
-			return (error_msg(NULL, ERR_MALLOC));
+			return (perror_msg(ERR_MALLOC));
 	}
 	return (1);
 }
@@ -75,15 +76,15 @@ int	pipex_solver(int ac, char **av, char **env)
 	error = 1;
 	if (!setup_pipex_st(&pipex, env))
 		return (0);
-	if (!manage_input(&pipex, av))
-		error = 0;
+	if (!manage_input(&pipex, av, ac))
+	{
+		destroy_pipex_st(&pipex);
+		return (0);
+	}
 	av += pipex.here_doc;
 	ac -= pipex.here_doc;
-	if (error)
-	{
-		if (!command_execution(&pipex, --ac, ++av))
-			error = 0;
-	}
+	if (!command_execution(&pipex, --ac, ++av))
+		error = 0;
 	destroy_pipex_st(&pipex);
 	while (ac-- - 1 > 0)
 		wait(NULL);
