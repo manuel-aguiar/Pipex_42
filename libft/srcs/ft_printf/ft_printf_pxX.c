@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_pxX.c                                        :+:      :+:    :+:   */
+/*   ft_printf_pxX.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 19:03:55 by manuel            #+#    #+#             */
-/*   Updated: 2023/04/20 16:25:32 by marvin           ###   ########.fr       */
+/*   Updated: 2023/08/17 19:43:12 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	putcountstr(char *str);
+int	putcountstr(char *str, int fd);
 
 static char	*stringaddr(unsigned long nb, char *str, int *len)
 {
@@ -31,7 +31,7 @@ static char	*stringaddr(unsigned long nb, char *str, int *len)
 	return (++str);
 }
 
-int	putcountaddr(void *address)
+int	putcountaddr(void *address, int fd)
 {
 	unsigned long	addr;
 	int				wordlen;
@@ -41,13 +41,13 @@ int	putcountaddr(void *address)
 	addr = (unsigned long)address;
 	if (!addr)
 	{
-		return (putcountstr("(nil)"));
+		return (putcountstr("(nil)", fd));
 	}
 	wordlen = 0;
 	ptr = stringaddr(addr, (str + sizeof(str) - 1), &wordlen);
 	*--ptr = 'x';
 	*--ptr = '0';
-	return (write(1, ptr, wordlen + 2));
+	return (write(fd, ptr, wordlen + 2));
 }
 
 static char	*stringhex(unsigned int nb, char *str, int *len, char *base)
@@ -67,7 +67,7 @@ static char	*stringhex(unsigned int nb, char *str, int *len, char *base)
 	return (++str);
 }
 
-int	putcounthex(unsigned int nb, char *base)
+int	putcounthex(unsigned int nb, char *base, int fd)
 {
 	int		wordlen;
 	char	str[8];
@@ -75,5 +75,5 @@ int	putcounthex(unsigned int nb, char *base)
 
 	wordlen = 0;
 	ptr = stringhex(nb, (str + sizeof(str) - 1), &wordlen, base);
-	return (write(1, ptr, wordlen));
+	return (write(fd, ptr, wordlen));
 }

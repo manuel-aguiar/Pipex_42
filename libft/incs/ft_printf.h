@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 19:03:55 by manuel            #+#    #+#             */
-/*   Updated: 2023/04/20 16:23:44 by marvin           ###   ########.fr       */
+/*   Updated: 2023/08/17 19:44:11 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@
 
 /* ---- ft_printf.c ---- */
 int	ft_printf(const char *str, ...);
+int	ft_printf_fd(int fd, const char *str, ...);
 
 #endif

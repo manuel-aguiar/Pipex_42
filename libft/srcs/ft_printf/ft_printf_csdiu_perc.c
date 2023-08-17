@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_csdiu_perc.c                                 :+:      :+:    :+:   */
+/*   ft_printf_csdiu_perc.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 19:03:55 by manuel            #+#    #+#             */
-/*   Updated: 2023/04/20 16:23:41 by marvin           ###   ########.fr       */
+/*   Updated: 2023/08/17 19:45:08 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	putcountint(int nb)
+int	putcountint(int nb, int fd)
 {
 	char	str[11];
 	char	print;
@@ -35,10 +35,10 @@ int	putcountint(int nb)
 	}
 	if (sign == -1)
 		str[--i] = '-';
-	return (write(1, &str[i], sizeof(str) - i));
+	return (write(fd, &str[i], sizeof(str) - i));
 }
 
-int	putcountunint(unsigned int nb)
+int	putcountunint(unsigned int nb, int fd)
 {
 	char	str[11];
 	int		i;
@@ -51,17 +51,17 @@ int	putcountunint(unsigned int nb)
 		str[--i] = (nb % 10) + '0';
 		nb /= 10;
 	}
-	return (write(1, &str[i], sizeof(str) - i));
+	return (write(fd, &str[i], sizeof(str) - i));
 }
 
-int	putcountstr(char *str)
+int	putcountstr(char *str, int fd)
 {
 	if (!str)
-		return (putcountstr("(null)"));
-	return (write(1, str, ft_strlen(str)));
+		return (putcountstr("(null)", fd));
+	return (write(fd, str, ft_strlen(str)));
 }
 
-int	putcountchar(char c)
+int	putcountchar(char c, int fd)
 {
-	return (write(1, &c, 1));
+	return (write(fd, &c, 1));
 }

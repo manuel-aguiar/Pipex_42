@@ -44,7 +44,7 @@ int	here_doc(t_pipex *pipex, char **av)
 int	manage_input(t_pipex *pipex, char **av, int ac)
 {
 	if (!ft_strncmp("here_doc", av[0], 8) && ft_strlen(av[0]) == 8 \
-		&& ac == 5)
+		&& ac >= 5)
 		pipex->here_doc = 1;
 	if (!pipex->here_doc)
 	{

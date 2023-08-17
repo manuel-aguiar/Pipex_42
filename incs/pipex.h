@@ -6,7 +6,7 @@
 /*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 12:36:48 by marvin            #+#    #+#             */
-/*   Updated: 2023/08/17 18:26:39 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/08/17 19:57:47 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@
 
 # include "libft.h"
 
-# define ERR_PIPE "Pipe"
-# define ERR_FORK "Fork"
+# define ERR_PIPE "pipe"
+# define ERR_FORK "fork"
 # define ERR_DUP "dup"
 # define ERR_DUP2 "dup2"
 # define ERR_ENV "env: no path variable"
-# define ERR_MALLOC "Malloc"
-# define ERR_INPUTS "pipex: Wrond number of Inputs\n"
-# define ERR_CMD ": command not found\n"
+# define ERR_MALLOC "malloc"
+# define ERR_INPUTS "pipex: wrond number of inputs\n"
+# define ERR_CMD "command not found"
 
 # define TRUE 1
 # define FALSE 0

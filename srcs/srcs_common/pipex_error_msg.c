@@ -35,6 +35,8 @@ void	perror_child_exit(t_pipex *pipex, char *text, int close_io)
 	}
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
+	if (pipex->pipefd[0] != -1)
+		close(pipex->pipefd[0]);
 	destroy_pipex_st(pipex);
 	exit(EXIT_FAILURE);
 }

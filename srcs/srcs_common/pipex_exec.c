@@ -59,7 +59,7 @@ int	exec_cmd_search_path(t_pipex *pipex, char ***args)
 	while (pipex->path[i])
 	{
 		if (!join_path_bin(&full_path, pipex->path[i++], cmd_args[0]))
-		    return (0);
+			return (0);
 		if (access(full_path, F_OK) == 0)
 		{
 			if (execve(full_path, cmd_args, pipex->env) == -1)
@@ -72,7 +72,8 @@ int	exec_cmd_search_path(t_pipex *pipex, char ***args)
 		else
 			ft_free_set_null(&full_path);
 	}
-	return (error_msg(cmd_args[0]) + error_msg(ERR_CMD));
+	return (0 & ft_printf_fd(STDERR_FILENO, "%s: %s\n", \
+			ERR_CMD, cmd_args[0]));
 }
 
 int	exec_command(t_pipex *pipex, char *cmd)
