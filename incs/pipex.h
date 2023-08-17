@@ -6,7 +6,7 @@
 /*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 12:36:48 by marvin            #+#    #+#             */
-/*   Updated: 2023/08/16 23:15:36 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/08/17 18:26:39 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,17 @@
 
 # include "libft.h"
 
-//# define malloc(x) NULL
-
 # define ERR_PIPE "Pipe"
 # define ERR_FORK "Fork"
-# define ERR_PATH "Binary not in PATH"
 # define ERR_DUP "dup"
 # define ERR_DUP2 "dup2"
-# define ERR_ENV "No PATH on ENV variables"
+# define ERR_ENV "env: no path variable"
 # define ERR_MALLOC "Malloc"
-# define ERR_NOOBS "pipex: Wrond number of Inputs\n"
+# define ERR_INPUTS "pipex: Wrond number of Inputs\n"
+# define ERR_CMD ": command not found\n"
 
-# define TMPFILE "tmp_BS"
+# define TRUE 1
+# define FALSE 0
 
 typedef struct s_pipex
 {
@@ -75,6 +74,6 @@ int		exec_command(t_pipex *pipex, char *cmd);
 /*pipex_error_msg.c*/
 int		error_msg(char *text);
 int		perror_msg(char *text);
-void	error_msg_exit(t_pipex *pipex, char *cmd, char *str);
+void	perror_child_exit(t_pipex *pipex, char *text, int close_io);
 
 #endif

@@ -24,17 +24,17 @@ int	error_msg(char *text)
 	return (0);
 }
 
-void	error_msg_exit(t_pipex *pipex, char *cmd, char *str)
+void	perror_child_exit(t_pipex *pipex, char *text, int close_io)
 {
-	if (str)
-		ft_putstr_fd(str, STDERR_FILENO);
-	if (cmd)
+	if (text)
+		perror(text);
+	if (close_io == 1)
 	{
-		ft_putstr_fd(": ", STDERR_FILENO);
-		ft_putstr_fd(cmd, STDERR_FILENO);
+		close(pipex->input);
+		close(pipex->output);
 	}
-	if (str || cmd)
-		ft_putstr_fd("\n", STDERR_FILENO);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
 	destroy_pipex_st(pipex);
 	exit(EXIT_FAILURE);
 }

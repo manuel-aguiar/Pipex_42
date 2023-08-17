@@ -29,19 +29,13 @@ int	child_process(t_pipex *pipex, char **av, int i)
 {
 	if (i == 0 && pipex->pipefd[0] != -1)
 		close(pipex->pipefd[0]);
-	if (dup2(pipex->input, STDIN_FILENO) == -1)
-		error_msg_exit(pipex, NULL, ERR_DUP2);
-	if (dup2(pipex->output, STDOUT_FILENO) == -1)
-		error_msg_exit(pipex, NULL, ERR_DUP2);
+	if (dup2(pipex->input, STDIN_FILENO) == -1 \
+	|| dup2(pipex->output, STDOUT_FILENO) == -1)
+		perror_child_exit(pipex, ERR_DUP2, TRUE);
 	close(pipex->input);
 	close(pipex->output);
 	if (!exec_command(pipex, av[i]))
-	{
-		close(STDIN_FILENO);
-		close(STDOUT_FILENO);
-		destroy_pipex_st(pipex);
-		exit(EXIT_FAILURE);
-	}
+		perror_child_exit(pipex, NULL, FALSE);
 	return (0);
 }
 
@@ -58,8 +52,10 @@ int	parent_process(t_pipex *pipex)
 	{
 		pipex->input = dup(pipex->pipefd[0]);
 		if (pipex->input == -1)
-			return (error_msg(ERR_DUP));
+			perror_msg(ERR_DUP);
 		close(pipex->pipefd[0]);
+		if (pipex->input == -1)
+			return (0);
 	}
 	pipex->pipefd[0] = -1;
 	pipex->pipefd[1] = -1;
@@ -95,7 +91,7 @@ int	command_execution(t_pipex *pipex, int ac, char **av)
 		{
 			if (i < ac - 2)
 				pipex->output = pipex->pipefd[1];
-			if (pipex->is_parent == 0)
+			if (!pipex->is_parent)
 				child_process(pipex, av, i);
 			if (!parent_process(pipex))
 				return (0);

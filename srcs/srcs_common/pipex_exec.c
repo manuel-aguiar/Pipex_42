@@ -24,7 +24,10 @@ int	join_path_bin(char **full_path, char *path, char *bin)
 	bin_len = ft_strlen(bin);
 	new = malloc(sizeof(*new) * (path_len + bin_len + 1 + 1));
 	if (!new)
-		return (error_msg(ERR_MALLOC));
+	{
+		*full_path = new;
+		return (perror_msg(ERR_MALLOC));
+	}
 	ft_memcpy(new, path, path_len);
 	new[path_len] = '/';
 	ft_memcpy(&new[path_len + 1], bin, bin_len);
@@ -39,20 +42,9 @@ int	exec_cmd_with_path(t_pipex *pipex, char ***args)
 
 	cmd_args = *args;
 	if (access(cmd_args[0], F_OK))
-	{
-		perror(cmd_args[0]);
-		ft_free_charmat_null(args, &free);
-		return (0);
-	}
-	else
-	{
-		if (execve(cmd_args[0], cmd_args, pipex->env) == -1)
-		{
-			perror(cmd_args[0]);
-			ft_free_charmat_null(args, &free);
-			return (0);
-		}
-	}
+		return (perror_msg(cmd_args[0]));
+	else if (execve(cmd_args[0], cmd_args, pipex->env) == -1)
+		return (perror_msg(cmd_args[0]));
 	return (1);
 }
 
@@ -66,8 +58,9 @@ int	exec_cmd_search_path(t_pipex *pipex, char ***args)
 	i = 0;
 	while (pipex->path[i])
 	{
-		if (join_path_bin(&full_path, pipex->path[i++], cmd_args[0]) \
-		&& access(full_path, F_OK) == 0)
+		if (!join_path_bin(&full_path, pipex->path[i++], cmd_args[0]))
+		    return (0);
+		if (access(full_path, F_OK) == 0)
 		{
 			if (execve(full_path, cmd_args, pipex->env) == -1)
 			{
@@ -79,23 +72,20 @@ int	exec_cmd_search_path(t_pipex *pipex, char ***args)
 		else
 			ft_free_set_null(&full_path);
 	}
-	error_msg("command not found: ");
-	error_msg(cmd_args[0]);
-	error_msg("\n");
-	return (0);
+	return (error_msg(cmd_args[0]) + error_msg(ERR_CMD));
 }
 
 int	exec_command(t_pipex *pipex, char *cmd)
 {
-	int		i;
 	char	**cmd_args;
 
 	cmd_args = ft_split(cmd, ' ');
 	if (!cmd_args)
-		return (error_msg(ERR_MALLOC));
+		return (perror_msg(ERR_MALLOC));
 	if (ft_strrchr(cmd_args[0], '/'))
-		return (exec_cmd_with_path(pipex, &cmd_args));
-	exec_cmd_search_path(pipex, &cmd_args);
+		exec_cmd_with_path(pipex, &cmd_args);
+	else
+		exec_cmd_search_path(pipex, &cmd_args);
 	ft_free_charmat_null(&cmd_args, &free);
 	return (0);
 }

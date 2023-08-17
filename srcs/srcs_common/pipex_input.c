@@ -18,7 +18,7 @@ int	here_doc(t_pipex *pipex, char **av)
 
 	while (1)
 	{
-		line = get_next_line(0);
+		line = get_next_line(STDIN_FILENO);
 		if (line)
 		{
 			if (!ft_strncmp(av[1], line, ft_strlen(av[1])) \

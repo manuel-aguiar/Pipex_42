@@ -21,7 +21,7 @@ int	setup_pipex_st(t_pipex *pipex, char **env)
 	while (ft_strncmp("PATH", env[i], 4))
 		i++;
 	if (!env[i])
-		return (error_msg(ERR_PATH));
+		return (error_msg(ERR_ENV));
 	folders = ft_split(&env[i][5], ':');
 	if (folders)
 		pipex->path = folders;
