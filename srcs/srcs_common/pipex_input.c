@@ -48,7 +48,7 @@ int	manage_input(t_pipex *pipex, char **av, int ac)
 		pipex->here_doc = 1;
 	if (!pipex->here_doc)
 	{
-		pipex->input = open(av[0], O_RDONLY);
+		pipex->input = open(av[0], O_RDWR);
 		if (pipex->input == -1)
 			return (perror_msg(av[0]));
 	}

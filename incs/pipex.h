@@ -6,7 +6,7 @@
 /*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 12:36:48 by marvin            #+#    #+#             */
-/*   Updated: 2023/08/17 19:57:47 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/08/17 22:41:42 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int		generate_temp(t_pipex *pipex);
 
 /*pipex_process*/
 int		pipe_and_fork(t_pipex *pipex, int ac, int i);
-int		child_process(t_pipex *pipex, char **av, int i);
+int		child_process(t_pipex *pipex, char **av, int i, int ac);
 int		parent_process(t_pipex *pipex);
 int		command_execution(t_pipex *pipex, int ac, char **av);
 

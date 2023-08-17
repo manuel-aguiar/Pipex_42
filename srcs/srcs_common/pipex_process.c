@@ -25,10 +25,10 @@ int	pipe_and_fork(t_pipex *pipex, int ac, int i)
 	return (1);
 }
 
-int	child_process(t_pipex *pipex, char **av, int i)
+int	child_process(t_pipex *pipex, char **av, int i, int ac)
 {
-	if (i == 0 && pipex->pipefd[0] != -1)
-		close(pipex->pipefd[0]);
+	//if (pipex->pipefd[0] != -1)
+	//	close(pipex->pipefd[0]);
 	if (dup2(pipex->input, STDIN_FILENO) == -1 \
 	|| dup2(pipex->output, STDOUT_FILENO) == -1)
 		perror_child_exit(pipex, ERR_DUP2, TRUE);
@@ -66,10 +66,10 @@ int	output_file(t_pipex *pipex, char **av, int index)
 {
 	if (pipex->here_doc)
 		pipex->output = open(av[index + 1], O_CREAT \
-						| O_WRONLY | O_APPEND, 0644);
+						| O_RDWR | O_APPEND, 0644);
 	else
 		pipex->output = open(av[index + 1], O_CREAT \
-						| O_WRONLY | O_TRUNC, 0644);
+						| O_RDWR | O_TRUNC, 0644);
 	if (pipex->output == -1)
 		return (perror_msg(av[index + 1]));
 	return (1);
@@ -92,7 +92,7 @@ int	command_execution(t_pipex *pipex, int ac, char **av)
 			if (i < ac - 2)
 				pipex->output = pipex->pipefd[1];
 			if (!pipex->is_parent)
-				child_process(pipex, av, i);
+				child_process(pipex, av, i, ac);
 			if (!parent_process(pipex))
 				return (0);
 		}
