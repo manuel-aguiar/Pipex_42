@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_main_base.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 12:01:39 by marvin            #+#    #+#             */
-/*   Updated: 2023/08/17 11:54:16 by marvin           ###   ########.fr       */
+/*   Updated: 2023/08/18 18:37:15 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@ int	main(int ac, char **av, char **env)
 }
 
 /*
-valgrind --trace-children=yes --track-origins=yes --leak-check=full
---show-leak-kinds=all ./pipex_bonus here_doc tibaria cat cat brah.txt
+valgrind --track-fds=yes --trace-children=yes
+./pipex_bonus brah.txt cat cat cat pwd out.txt
 */
