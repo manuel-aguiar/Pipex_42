@@ -83,7 +83,7 @@ int	pipex_solver(int ac, char **av, char **env)
 	}
 	av += pipex.here_doc;
 	ac -= pipex.here_doc;
-	if (!command_execution(&pipex, --ac, ++av))
+	if (!process_execution(&pipex, --ac, ++av))
 		error = 0;
 	destroy_pipex_st(&pipex);
 	while (ac-- - 1 > 0)

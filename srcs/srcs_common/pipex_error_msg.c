@@ -26,6 +26,9 @@ int	error_msg(char *text)
 
 void	perror_child_exit(t_pipex *pipex, char *text, int close_io)
 {
+	char	buf[100];
+	int		size;
+
 	if (text)
 		perror(text);
 	if (close_io == 1)
@@ -33,6 +36,9 @@ void	perror_child_exit(t_pipex *pipex, char *text, int close_io)
 		close(pipex->input);
 		close(pipex->output);
 	}
+	size = sizeof(buf);
+	while (read(STDIN_FILENO, buf, size))
+		;
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
 	if (pipex->pipefd[0] != -1)

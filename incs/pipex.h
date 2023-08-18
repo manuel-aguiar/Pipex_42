@@ -6,7 +6,7 @@
 /*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 12:36:48 by marvin            #+#    #+#             */
-/*   Updated: 2023/08/17 22:41:42 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/08/18 18:09:22 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ int		pipex_solver(int ac, char **av, char **env);
 int		generate_temp(t_pipex *pipex);
 
 /*pipex_process*/
-int		pipe_and_fork(t_pipex *pipex, int ac, int i);
-int		child_process(t_pipex *pipex, char **av, int i, int ac);
+int		pipe_fork_and_output(t_pipex *pipex, int ac, char **av, int i);
+int		child_process(t_pipex *pipex, char **av, int i);
 int		parent_process(t_pipex *pipex);
-int		command_execution(t_pipex *pipex, int ac, char **av);
+int		process_execution(t_pipex *pipex, int ac, char **av);
 
 /*pipex_exec.c*/
 int		join_path_bin(char **full_path, char *path, char *bin);
